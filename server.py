@@ -1,6 +1,10 @@
 from flask import Flask, render_template, url_for, request, redirect
 import csv
 
+# Steps to run server local
+# Activate venv - venv\Scripts\activate
+# Initialize Flask - flask --app server.py run
+
 app = Flask(__name__)
 print(__name__)
 
@@ -26,8 +30,11 @@ def write_to_csv_file(data):
 @app.route('/submit_form', methods=['POST', 'GET'])
 def submit_form():
     if request.method == 'POST':
-        data = request.form.to_dict()
-        write_to_csv_file(data)
-        return redirect('/thank_you.html')
+        try:
+            data = request.form.to_dict()
+            write_to_csv_file(data)
+            return redirect('/thank_you.html')
+        except:
+            return 'Did not save to database'
     else:
         return 'Oops! I am new, I am unsure of what happened'
